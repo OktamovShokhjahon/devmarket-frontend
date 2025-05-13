@@ -16,9 +16,11 @@ const config = {
       padding: "2rem",
       screens: {
         "2xl": "1400px",
-        md2: "1000px", // Custom breakpoint for responsive navbar behavior
-        md3: "1170px", // Custom breakpoint for responsive navbar behavior
+        md2: "1000px",
       },
+    },
+    screens: {
+      md2: "1000px",
     },
     extend: {
       colors: {

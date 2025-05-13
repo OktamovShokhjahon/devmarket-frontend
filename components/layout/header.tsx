@@ -97,7 +97,7 @@ export default function Header() {
       )}
     >
       <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-6 md:gap-8 lg:gap-10">
+        <div className="flex items-center gap-6 md2:gap-8 lg:gap-10">
           <Link href="/" className="flex items-center gap-2">
             <Code className="h-6 w-6 text-primary" />
             <span className="text-xl font-bold">DevMarket</span>
@@ -166,7 +166,7 @@ export default function Header() {
           </nav>
         </div>
 
-        <div className="hidden md2:flex md:flex-1 md:items-center md:justify-end md:gap-4">
+        <div className="hidden md2:flex md2:flex-1 md2:items-center md2:justify-end md2:gap-4">
           <div className="w-full max-w-sm relative">
             <form onSubmit={handleSearch}>
               <div className="relative">
@@ -174,7 +174,7 @@ export default function Header() {
                 <Input
                   type="search"
                   placeholder="Search products..."
-                  className="w-full rounded-full bg-background pl-8 md:w-[300px] lg:w-[400px]"
+                  className="w-full rounded-full bg-background pl-8 md2:w-[300px] lg:w-[400px]"
                   value={searchQuery}
                   onChange={handleSearchChange}
                   onFocus={() =>
@@ -188,7 +188,7 @@ export default function Header() {
             </form>
 
             {showSearchResults && searchResults.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 rounded-md border bg-background shadow-lg z-50">
+              <div className="absolute top-full left-0 right-0 mt-1 rounded-md2 border bg-background shadow-lg z-50">
                 <ul className="py-2">
                   {searchResults.map((result) => (
                     <li key={result.id}>
@@ -197,7 +197,7 @@ export default function Header() {
                         className="flex items-center gap-3 px-4 py-2 hover:bg-muted"
                         onClick={() => setShowSearchResults(false)}
                       >
-                        <div className="h-8 w-8 rounded-md border overflow-hidden flex-shrink-0">
+                        <div className="h-8 w-8 rounded-md2 border overflow-hidden flex-shrink-0">
                           <img
                             src={result.image || "/placeholder.svg"}
                             alt={result.title}
