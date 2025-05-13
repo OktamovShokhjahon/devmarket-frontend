@@ -22,6 +22,11 @@ const config = {
     screens: {
       md2: "1000px",
       md3: "615px",
+      md: "768px",
+      sm: "640px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
     },
     extend: {
       colors: {

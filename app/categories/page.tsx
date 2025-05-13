@@ -55,7 +55,7 @@ export default function CategoriesPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1 md3:grid-cols-2 md2:grid-cols-3">
         {categories.map((category) => (
           <Link key={category.id} href={`/projects?category=${category.id}`}>
             <Card className="overflow-hidden transition-all hover:shadow-md">
