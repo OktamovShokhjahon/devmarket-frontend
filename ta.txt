@@ -1,0 +1,235 @@
+# Technical Assignment: Backend Development
+
+## Overview
+The backend will be developed using **Node.js** with **Express.js** as the web framework and **MongoDB** as the database. The backend will expose RESTful APIs to handle the application's core functionality. Below is the detailed specification for endpoints, request methods, request bodies, query parameters, and database schemas.
+
+---
+
+## Endpoints
+
+### 1. User Management
+#### 1.1. Register User
+- **Endpoint**: `/api/users/register`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "name": "string",
+    "email": "string",
+    "password": "string"
+  }
+  ```
+- **Response**:
+  - `201 Created`: User successfully registered.
+  - `400 Bad Request`: Validation errors.
+
+#### 1.2. Login User
+- **Endpoint**: `/api/users/login`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "email": "string",
+    "password": "string"
+  }
+  ```
+- **Response**:
+  - `200 OK`: Returns a JWT token.
+  - `401 Unauthorized`: Invalid credentials.
+
+#### 1.3. Get User Profile
+- **Endpoint**: `/api/users/profile`
+- **Method**: `GET`
+- **Headers**:
+  - `Authorization: Bearer <token>`
+- **Response**:
+  - `200 OK`: Returns user details.
+  - `401 Unauthorized`: Token missing or invalid.
+
+---
+
+### 2. Product Management
+#### 2.1. Create Product
+- **Endpoint**: `/api/products`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "name": "string",
+    "description": "string",
+    "price": "number",
+    "category": "string",
+    "stock": "number"
+  }
+  ```
+- **Response**:
+  - `201 Created`: Product successfully created.
+  - `400 Bad Request`: Validation errors.
+
+#### 2.2. Get All Products
+- **Endpoint**: `/api/products`
+- **Method**: `GET`
+- **Query Parameters**:
+  - `category` (optional): Filter by category.
+  - `priceRange` (optional): Filter by price range.
+- **Response**:
+  - `200 OK`: Returns a list of products.
+
+#### 2.3. Get Product by ID
+- **Endpoint**: `/api/products/:id`
+- **Method**: `GET`
+- **Response**:
+  - `200 OK`: Returns product details.
+  - `404 Not Found`: Product not found.
+
+#### 2.4. Update Product
+- **Endpoint**: `/api/products/:id`
+- **Method**: `PUT`
+- **Request Body**:
+  ```json
+  {
+    "name": "string",
+    "description": "string",
+    "price": "number",
+    "category": "string",
+    "stock": "number"
+  }
+  ```
+- **Response**:
+  - `200 OK`: Product successfully updated.
+  - `404 Not Found`: Product not found.
+
+#### 2.5. Delete Product
+- **Endpoint**: `/api/products/:id`
+- **Method**: `DELETE`
+- **Response**:
+  - `200 OK`: Product successfully deleted.
+  - `404 Not Found`: Product not found.
+
+---
+
+### 3. Order Management
+#### 3.1. Create Order
+- **Endpoint**: `/api/orders`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "userId": "string",
+    "products": [
+      {
+        "productId": "string",
+        "quantity": "number"
+      }
+    ],
+    "totalPrice": "number",
+    "status": "string"
+  }
+  ```
+- **Response**:
+  - `201 Created`: Order successfully created.
+  - `400 Bad Request`: Validation errors.
+
+#### 3.2. Get Orders by User
+- **Endpoint**: `/api/orders/user/:userId`
+- **Method**: `GET`
+- **Response**:
+  - `200 OK`: Returns a list of orders for the user.
+  - `404 Not Found`: User or orders not found.
+
+---
+
+## Database Schemas
+
+### 1. User Schema
+```javascript
+const UserSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+```
+
+### 2. Product Schema
+```javascript
+const ProductSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String },
+  price: { type: Number, required: true },
+  category: { type: String },
+  stock: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now }
+});
+```
+
+### 3. Order Schema
+```javascript
+const OrderSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  products: [
+    {
+      productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+      quantity: { type: Number, required: true }
+    }
+  ],
+  totalPrice: { type: Number, required: true },
+  status: { type: String, default: 'Pending' },
+  createdAt: { type: Date, default: Date.now }
+});
+```
+
+### 4. Messaging Management
+
+#### 4.1. Send Message
+- **Endpoint**: `/api/messages`
+- **Method**: `POST`
+- **Request Body**:
+    ```json
+    {
+        "senderId": "string",
+        "receiverId": "string",
+        "content": "string"
+    }
+    ```
+- **Response**:
+    - `201 Created`: Message successfully sent.
+    - `400 Bad Request`: Validation errors.
+
+#### 4.2. Get Messages Between Users
+- **Endpoint**: `/api/messages/conversation`
+- **Method**: `GET`
+- **Query Parameters**:
+    - `senderId`: ID of the sender.
+    - `receiverId`: ID of the receiver.
+- **Response**:
+    - `200 OK`: Returns a list of messages between the two users.
+    - `404 Not Found`: No messages found.
+
+#### 4.3. Delete Message
+- **Endpoint**: `/api/messages/:id`
+- **Method**: `DELETE`
+- **Response**:
+    - `200 OK`: Message successfully deleted.
+    - `404 Not Found`: Message not found.
+
+---
+
+## Messaging Database Schema
+
+### 1. Message Schema
+const MessageSchema = new mongoose.Schema({
+  senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  receiverId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  content: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
+---
+
+## Additional Notes
+1. Use **JWT** for authentication and authorization.
+2. Implement input validation using libraries like **Joi** or **Express Validator**.
+3. Use **Mongoose** for MongoDB integration.
+4. Follow RESTful API design principles.
+5. Ensure proper error handling and logging.

@@ -1,0 +1,23 @@
+/* Responsive styles using Tailwind CSS classes */
+
+/* These styles will be applied through Tailwind's utility classes in the components */
+
+/* 
+Breakpoint reference:
+- 2xl: min-width: 1536px (Big Screens - Desktops & TVs)
+- xl: min-width: 1280px (Laptop Screens - Large)
+- lg: min-width: 1024px (Laptop Screens - Standard)
+- md: min-width: 768px (Tablets)
+- sm: min-width: 640px (Small tablets and large phones)
+- xs: max-width: 639px (Mobile phones)
+*/
+
+/* 
+Examples of Tailwind responsive classes:
+- 2xl:max-w-7xl (max width on 2xl screens)
+- xl:grid-cols-4 (4 columns on xl screens)
+- lg:flex-row (flex row on lg screens)
+- md:p-6 (padding 6 on md screens)
+- sm:text-sm (small text on sm screens)
+- text-xs (extra small text by default, for mobile)
+*/
