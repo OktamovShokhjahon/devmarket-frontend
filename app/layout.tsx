@@ -15,10 +15,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <CartProvider>
-      <ClientLayout>{children}</ClientLayout>
-    </CartProvider>
+    <Suspense>
+      <CartProvider>
+        <ClientLayout>{children}</ClientLayout>
+      </CartProvider>
+    </Suspense>
   );
 }
 
 import "./globals.css";
+import { Suspense } from "react";
