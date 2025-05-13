@@ -430,7 +430,6 @@ export default function OrdersPage() {
       });
     }
 
-    // Reset review state
     setReviewModalOpen(false);
     setCurrentOrderId(null);
     setReviewText("");

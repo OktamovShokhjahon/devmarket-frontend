@@ -46,7 +46,6 @@ import { mockProjects } from "@/lib/mock-data";
 import { formatDate } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 
-// Mock users data
 const mockUsers = [
   {
     id: "1",
@@ -90,14 +89,12 @@ const mockUsers = [
   },
 ];
 
-// Mock pending products
 const pendingProducts = mockProjects.slice(0, 3).map((product) => ({
   ...product,
   status: "pending",
   submittedDate: "2023-05-01T00:00:00Z",
 }));
 
-// Mock transactions data
 const mockTransactions = [
   {
     id: "t1",
@@ -182,11 +179,10 @@ export default function AdminDashboardPage() {
     });
   };
 
-  // Stats
   const totalUsers = users.length;
   const activeUsers = users.filter((user) => user.status === "active").length;
   const totalProducts = mockProjects.length;
-  const totalRevenue = 12580.75; // Mock total revenue
+  const totalRevenue = 12580.75;
 
   return (
     <div className="container py-8 md:py-12">

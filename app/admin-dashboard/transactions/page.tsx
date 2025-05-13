@@ -1,18 +1,36 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useAuth } from "@/context/auth-context"
-import { ArrowLeft, Download, Search } from "lucide-react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useAuth } from "@/context/auth-context";
+import { ArrowLeft, Download, Search } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-// Mock transaction data
 const mockTransactions = [
   {
     id: "tx1",
@@ -179,82 +197,96 @@ const mockTransactions = [
     status: "completed",
     fee: 4.0,
   },
-]
+];
 
 export default function AdminTransactionsPage() {
-  const { user } = useAuth()
-  const router = useRouter()
-  const [transactions, setTransactions] = useState(mockTransactions)
-  const [filteredTransactions, setFilteredTransactions] = useState(mockTransactions)
+  const { user } = useAuth();
+  const router = useRouter();
+  const [transactions, setTransactions] = useState(mockTransactions);
+  const [filteredTransactions, setFilteredTransactions] =
+    useState(mockTransactions);
   const [filters, setFilters] = useState({
     search: "",
     type: "all",
     status: "all",
     dateFrom: "",
     dateTo: "",
-  })
+  });
 
-  // Stats
-  const totalSales = transactions.filter((tx) => tx.type === "sale").reduce((sum, tx) => sum + tx.amount, 0)
+  const totalSales = transactions
+    .filter((tx) => tx.type === "sale")
+    .reduce((sum, tx) => sum + tx.amount, 0);
 
-  const totalFees = transactions.reduce((sum, tx) => sum + tx.fee, 0)
+  const totalFees = transactions.reduce((sum, tx) => sum + tx.fee, 0);
 
-  const totalWithdrawals = transactions.filter((tx) => tx.type === "withdrawal").reduce((sum, tx) => sum + tx.amount, 0)
+  const totalWithdrawals = transactions
+    .filter((tx) => tx.type === "withdrawal")
+    .reduce((sum, tx) => sum + tx.amount, 0);
 
-  const totalDeposits = transactions.filter((tx) => tx.type === "deposit").reduce((sum, tx) => sum + tx.amount, 0)
+  const totalDeposits = transactions
+    .filter((tx) => tx.type === "deposit")
+    .reduce((sum, tx) => sum + tx.amount, 0);
 
   useEffect(() => {
     if (!user) {
-      router.push("/auth/login")
+      router.push("/auth/login");
     } else if (user.role !== "admin") {
-      router.push(`/${user.role}-dashboard`)
+      router.push(`/${user.role}-dashboard`);
     }
-  }, [user, router])
+  }, [user, router]);
 
   useEffect(() => {
-    // Apply filters
-    let result = transactions
+    let result = transactions;
 
     if (filters.search) {
-      const searchLower = filters.search.toLowerCase()
+      const searchLower = filters.search.toLowerCase();
       result = result.filter(
         (tx) =>
           tx.description.toLowerCase().includes(searchLower) ||
           tx.buyer.toLowerCase().includes(searchLower) ||
           tx.seller.toLowerCase().includes(searchLower) ||
-          tx.id.toLowerCase().includes(searchLower),
-      )
+          tx.id.toLowerCase().includes(searchLower)
+      );
     }
 
     if (filters.type !== "all") {
-      result = result.filter((tx) => tx.type === filters.type)
+      result = result.filter((tx) => tx.type === filters.type);
     }
 
     if (filters.status !== "all") {
-      result = result.filter((tx) => tx.status === filters.status)
+      result = result.filter((tx) => tx.status === filters.status);
     }
 
     if (filters.dateFrom) {
-      const fromDate = new Date(filters.dateFrom)
-      result = result.filter((tx) => new Date(tx.date) >= fromDate)
+      const fromDate = new Date(filters.dateFrom);
+      result = result.filter((tx) => new Date(tx.date) >= fromDate);
     }
 
     if (filters.dateTo) {
-      const toDate = new Date(filters.dateTo)
-      toDate.setHours(23, 59, 59, 999) // End of day
-      result = result.filter((tx) => new Date(tx.date) <= toDate)
+      const toDate = new Date(filters.dateTo);
+      toDate.setHours(23, 59, 59, 999);
+      result = result.filter((tx) => new Date(tx.date) <= toDate);
     }
 
-    setFilteredTransactions(result)
-  }, [filters, transactions])
+    setFilteredTransactions(result);
+  }, [filters, transactions]);
 
   if (!user) {
-    return null
+    return null;
   }
 
   const handleExportCSV = () => {
-    // Create CSV content
-    const headers = ["ID", "Date", "Type", "Description", "Buyer", "Seller", "Amount", "Fee", "Status"]
+    const headers = [
+      "ID",
+      "Date",
+      "Type",
+      "Description",
+      "Buyer",
+      "Seller",
+      "Amount",
+      "Fee",
+      "Status",
+    ];
     const csvRows = [
       headers.join(","),
       ...filteredTransactions.map((tx) =>
@@ -262,61 +294,86 @@ export default function AdminTransactionsPage() {
           tx.id,
           new Date(tx.date).toISOString().split("T")[0],
           tx.type,
-          `"${tx.description}"`, // Quote description to handle commas
+          `"${tx.description}"`,
           `"${tx.buyer}"`,
           `"${tx.seller}"`,
           tx.amount.toFixed(2),
           tx.fee.toFixed(2),
           tx.status,
-        ].join(","),
+        ].join(",")
       ),
-    ]
-    const csvContent = csvRows.join("\n")
+    ];
+    const csvContent = csvRows.join("\n");
 
-    // Create and download the file
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement("a")
-    link.setAttribute("href", url)
-    link.setAttribute("download", `transactions-${new Date().toISOString().split("T")[0]}.csv`)
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `transactions-${new Date().toISOString().split("T")[0]}.csv`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="container py-8 md:py-12">
-      <Link href="/admin" className="mb-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        href="/admin"
+        className="mb-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeft className="h-4 w-4" /> Back to Dashboard
       </Link>
 
-      <h1 className="mb-2 text-3xl font-bold tracking-tight md:text-4xl">Transaction History</h1>
-      <p className="mb-8 text-muted-foreground">View and manage all platform transactions</p>
+      <h1 className="mb-2 text-3xl font-bold tracking-tight md:text-4xl">
+        Transaction History
+      </h1>
+      <p className="mb-8 text-muted-foreground">
+        View and manage all platform transactions
+      </p>
 
       {/* Stats Cards */}
       <div className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardContent className="p-6">
-            <div className="text-sm font-medium text-muted-foreground">Total Sales</div>
-            <div className="mt-1 text-2xl font-bold">${totalSales.toFixed(2)}</div>
+            <div className="text-sm font-medium text-muted-foreground">
+              Total Sales
+            </div>
+            <div className="mt-1 text-2xl font-bold">
+              ${totalSales.toFixed(2)}
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6">
-            <div className="text-sm font-medium text-muted-foreground">Platform Fees</div>
-            <div className="mt-1 text-2xl font-bold">${totalFees.toFixed(2)}</div>
+            <div className="text-sm font-medium text-muted-foreground">
+              Platform Fees
+            </div>
+            <div className="mt-1 text-2xl font-bold">
+              ${totalFees.toFixed(2)}
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6">
-            <div className="text-sm font-medium text-muted-foreground">Total Withdrawals</div>
-            <div className="mt-1 text-2xl font-bold">${totalWithdrawals.toFixed(2)}</div>
+            <div className="text-sm font-medium text-muted-foreground">
+              Total Withdrawals
+            </div>
+            <div className="mt-1 text-2xl font-bold">
+              ${totalWithdrawals.toFixed(2)}
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6">
-            <div className="text-sm font-medium text-muted-foreground">Total Deposits</div>
-            <div className="mt-1 text-2xl font-bold">${totalDeposits.toFixed(2)}</div>
+            <div className="text-sm font-medium text-muted-foreground">
+              Total Deposits
+            </div>
+            <div className="mt-1 text-2xl font-bold">
+              ${totalDeposits.toFixed(2)}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -324,7 +381,9 @@ export default function AdminTransactionsPage() {
       <Card>
         <CardHeader>
           <CardTitle>Transaction History</CardTitle>
-          <CardDescription>View all transactions on the platform</CardDescription>
+          <CardDescription>
+            View all transactions on the platform
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {/* Filters */}
@@ -337,7 +396,9 @@ export default function AdminTransactionsPage() {
                     placeholder="Search transactions..."
                     className="pl-8"
                     value={filters.search}
-                    onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                    onChange={(e) =>
+                      setFilters({ ...filters, search: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -346,7 +407,12 @@ export default function AdminTransactionsPage() {
                   <Label htmlFor="filter-type" className="sr-only">
                     Type
                   </Label>
-                  <Select value={filters.type} onValueChange={(value) => setFilters({ ...filters, type: value })}>
+                  <Select
+                    value={filters.type}
+                    onValueChange={(value) =>
+                      setFilters({ ...filters, type: value })
+                    }
+                  >
                     <SelectTrigger id="filter-type">
                       <SelectValue placeholder="All Types" />
                     </SelectTrigger>
@@ -364,7 +430,12 @@ export default function AdminTransactionsPage() {
                   <Label htmlFor="filter-status" className="sr-only">
                     Status
                   </Label>
-                  <Select value={filters.status} onValueChange={(value) => setFilters({ ...filters, status: value })}>
+                  <Select
+                    value={filters.status}
+                    onValueChange={(value) =>
+                      setFilters({ ...filters, status: value })
+                    }
+                  >
                     <SelectTrigger id="filter-status">
                       <SelectValue placeholder="All Statuses" />
                     </SelectTrigger>
@@ -387,7 +458,9 @@ export default function AdminTransactionsPage() {
                     id="date-from"
                     type="date"
                     value={filters.dateFrom}
-                    onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })}
+                    onChange={(e) =>
+                      setFilters({ ...filters, dateFrom: e.target.value })
+                    }
                   />
                 </div>
                 <div>
@@ -396,12 +469,18 @@ export default function AdminTransactionsPage() {
                     id="date-to"
                     type="date"
                     value={filters.dateTo}
-                    onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })}
+                    onChange={(e) =>
+                      setFilters({ ...filters, dateTo: e.target.value })
+                    }
                   />
                 </div>
               </div>
               <div className="flex items-end md:ml-auto">
-                <Button variant="outline" className="gap-2" onClick={handleExportCSV}>
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={handleExportCSV}
+                >
                   <Download className="h-4 w-4" /> Export CSV
                 </Button>
               </div>
@@ -426,7 +505,10 @@ export default function AdminTransactionsPage() {
               <TableBody>
                 {filteredTransactions.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-6 text-muted-foreground">
+                    <TableCell
+                      colSpan={8}
+                      className="text-center py-6 text-muted-foreground"
+                    >
                       No transactions found matching your filters.
                     </TableCell>
                   </TableRow>
@@ -443,18 +525,30 @@ export default function AdminTransactionsPage() {
                         <div className="capitalize">{transaction.type}</div>
                       </TableCell>
                       <TableCell>{transaction.description}</TableCell>
-                      <TableCell>{transaction.buyer || <span className="text-muted-foreground">-</span>}</TableCell>
-                      <TableCell>{transaction.seller || <span className="text-muted-foreground">-</span>}</TableCell>
-                      <TableCell className="text-right font-medium">${transaction.amount.toFixed(2)}</TableCell>
-                      <TableCell className="text-right">${transaction.fee.toFixed(2)}</TableCell>
+                      <TableCell>
+                        {transaction.buyer || (
+                          <span className="text-muted-foreground">-</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {transaction.seller || (
+                          <span className="text-muted-foreground">-</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right font-medium">
+                        ${transaction.amount.toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        ${transaction.fee.toFixed(2)}
+                      </TableCell>
                       <TableCell>
                         <div
                           className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                             transaction.status === "completed"
                               ? "bg-green-100 text-green-600"
                               : transaction.status === "pending"
-                                ? "bg-yellow-100 text-yellow-600"
-                                : "bg-red-100 text-red-600"
+                              ? "bg-yellow-100 text-yellow-600"
+                              : "bg-red-100 text-red-600"
                           }`}
                         >
                           {transaction.status}
@@ -469,5 +563,5 @@ export default function AdminTransactionsPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
