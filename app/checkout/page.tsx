@@ -41,7 +41,9 @@ export default function CheckoutPage() {
   const total = subtotal + tax;
 
   if (cart.length === 0) {
-    router.push("/cart");
+    if (typeof window !== "undefined") {
+      router.push("/cart");
+    }
     return null;
   }
 
