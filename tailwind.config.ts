@@ -21,6 +21,7 @@ const config = {
     },
     screens: {
       md2: "1000px",
+      md3: "615px",
     },
     extend: {
       colors: {

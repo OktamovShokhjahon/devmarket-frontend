@@ -28,13 +28,13 @@ export default function ProjectsPage() {
         </p>
       </div>
 
-      <div className="grid gap-8 md3:grid-cols-[240px_1fr]">
-        <div className="hidden md3:block">
+      <div className="grid gap-8 md:grid-cols-[240px_1fr]">
+        <div className="hidden md:block">
           <ProjectsFilter />
         </div>
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <div className="md3:hidden">
+            <div className="md:hidden">
               <ProjectsFilter />
             </div>
             <ProjectsSort />

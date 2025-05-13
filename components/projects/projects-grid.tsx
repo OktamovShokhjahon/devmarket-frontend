@@ -15,7 +15,7 @@ export default function ProjectsGrid({
   const paginatedProjects = mockProjects.slice(startIndex, endIndex);
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 grid-cols-1 md2:grid-cols-3 md3:grid-cols-2">
       {paginatedProjects.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
