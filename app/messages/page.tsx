@@ -490,14 +490,14 @@ export default function MessagesPage() {
 
             {/* Chat Area */}
             <div
-              className={`flex flex-col h-full  overflow-y-scroll ${
+              className={`h-[600px] ${
                 activeConversation && isMobileView ? "block" : "hidden"
-              } md:block relative`}
+              } md:block`}
             >
               {activeConversation ? (
-                <>
+                <div className="flex flex-col h-full">
                   {/* Chat Header */}
-                  <div className="border-b p-4 bg-background z-10 flex items-center gap-3">
+                  <div className="border-b p-4 bg-background flex-none flex items-center gap-3">
                     {isMobileView && (
                       <Button
                         size="icon"
@@ -553,8 +553,8 @@ export default function MessagesPage() {
                   </div>
 
                   {/* Messages - Scrollable area */}
-                  <div className="flex-1 overflow-y-auto p-4 pb-20">
-                    <div className="space-y-4">
+                  <div className="flex-1 overflow-y-auto">
+                    <div className="space-y-4 p-4 pb-0">
                       {messages.map((message) => (
                         <div
                           key={message.id}
@@ -597,7 +597,7 @@ export default function MessagesPage() {
                   </div>
 
                   {/* Message Input - Fixed at bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 border-t bg-background p-4">
+                  <div className="flex-none border-t bg-background p-4">
                     <div className="flex gap-2">
                       <Input
                         placeholder="Type a message..."
@@ -615,7 +615,7 @@ export default function MessagesPage() {
                       </Button>
                     </div>
                   </div>
-                </>
+                </div>
               ) : (
                 <div className="flex h-full flex-col items-center justify-center p-4 text-center">
                   <div className="mb-4 rounded-full bg-muted p-6">
