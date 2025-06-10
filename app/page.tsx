@@ -32,7 +32,7 @@ export default function Home() {
               </Button>
             </Link>
           </div>
-          <div className="mt-8 w-full max-w-5xl overflow-hidden rounded-lg border shadow-xl">
+          <div className="mt-8 w-full max-w-5xl overflow-hidden rounded-lg border shadow-xl h-[60vh]">
             <Image
               src="/placeholder.svg?height=600&width=1200"
               width={1200}

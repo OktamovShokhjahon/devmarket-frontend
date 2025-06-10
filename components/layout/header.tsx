@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
-import { Code, Menu, Search, User } from "lucide-react";
+import { Code, Menu, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -99,7 +99,7 @@ export default function Header() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6 md2:gap-8 lg:gap-10">
           <Link href="/" className="flex items-center gap-2">
-            <Code className="h-6 w-6 text-primary" />
+            <ShoppingCart className="h-6 w-6 text-primary" />
             <span className="text-xl font-bold">DevMarket</span>
           </Link>
 
